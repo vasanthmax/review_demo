@@ -4,10 +4,11 @@ import Tabletop from 'tabletop';
 
 const Card = () => {
   const [data, setdata] = useState([]);
+  const params = new URLSearchParams(window.location.search);
   const [readMore, setReadMore] = useState();
   useEffect(() => {
     Tabletop.init({
-      key: '1XLpHKgPIxivpTHiOuA1oa1axB-JLsoIOxLO3XTOceb8',
+      key: params.get('id'),
       simpleSheet: true,
     })
       .then((data) => {
