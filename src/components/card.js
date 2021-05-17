@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import Star from '../assets/star.png';
 import Tabletop from 'tabletop';
+import table from '../assets/table.json';
+import axios from 'axios';
 
 const Card = () => {
+  const [page, setPage] = useState(1);
   const [data, setdata] = useState([]);
   const [all, setAll] = useState([]);
+  const [loading, setLoading] = useState(true);
   const params = new URLSearchParams(window.location.search);
   const [readMore, setReadMore] = useState();
   useEffect(() => {
-    Tabletop.init({
-      // key: params.get('id'),
-      key: '1XLpHKgPIxivpTHiOuA1oa1axB-JLsoIOxLO3XTOceb8',
-      simpleSheet: true,
-    })
-      .then((data) => {
-        setdata(data);
-        setAll(data);
+    axios
+      .get(
+        `https://sheetdb.io/api/v1/7puf4ags6dznm?limit=50&offset=${page.toString}`
+      )
+      .then((lol) => {
+        setdata([...data, ...lol.data]);
+
+        setAll([...data, ...lol.data]);
+        console.log(data.data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-  data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }, [page]);
+  // data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const filteredData = (filtervalue) => {
     if (filtervalue == 'All') {
@@ -34,6 +39,30 @@ const Card = () => {
     }
   };
   console.log(data);
+
+  // const handleScroll = (e) => {
+  //   const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
+
+  // };
+
+  const scrollToend = () => {
+    setPage(page + 50);
+    console.log(page);
+  };
+  window.onscroll = function () {
+    if (
+      Math.ceil(window.innerHeight + document.documentElement.scrollTop) ===
+      document.documentElement.offsetHeight
+    ) {
+      console.log('scrolling');
+      scrollToend();
+    }
+    // console.log(
+    //   Math.ceil(window.innerHeight + document.documentElement.scrollTop),
+    //   document.documentElement.offsetHeight
+    // );
+  };
+
   return (
     <>
       <div className='filter-bar'>
