@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Star from '../assets/star.png';
-import Tabletop from 'tabletop';
-import table from '../assets/table.json';
 import axios from 'axios';
 
 const Card = () => {
@@ -14,20 +12,19 @@ const Card = () => {
   useEffect(() => {
     axios
       .get(
-        `https://sheetdb.io/api/v1/7puf4ags6dznm?limit=50&offset=${page.toString}`
+        `https://script.google.com/macros/s/AKfycbyS78rJrCu8JKkSw3qt43c047o1uMSM74dy0iYOP0dKO7sAlM0u1TAwCKjTbqBTzK9Ztw/exec?limit=50&offset=${page.toString}`
       )
       .then((lol) => {
-        setdata([...data, ...lol.data]);
+        setdata([...data, ...lol.data[0].data]);
 
-        setAll([...data, ...lol.data]);
-        console.log(data.data);
+        setAll([...data, ...lol.data[0].data]);
+        console.log(data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, [page]);
   // data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
   const filteredData = (filtervalue) => {
     if (filtervalue == 'All') {
       console.log('All');
@@ -38,12 +35,7 @@ const Card = () => {
       setAll(dataValue);
     }
   };
-  console.log(data);
-
-  // const handleScroll = (e) => {
-  //   const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
-
-  // };
+  console.log(data.length);
 
   const scrollToend = () => {
     setPage(page + 50);
@@ -62,6 +54,7 @@ const Card = () => {
     //   document.documentElement.offsetHeight
     // );
   };
+  console.log(data);
 
   return (
     <>
@@ -77,58 +70,59 @@ const Card = () => {
         </button>
       </div>
       <div className='no-view'>
-        {all.map((ch, value) => {
-          const Ratings = [];
-          const star = ch.Rating.slice(0, 1);
-          for (let i = 0; i < parseInt(star); i++) {
-            Ratings.push(<img src={Star} alt='' />);
-          }
-          let read = ch.Review.slice(0, 100);
-          const ReadMore = (index) => {
-            console.log('isClicked');
-            read = ch.Review;
-            setReadMore(index);
-          };
-          return (
-            <div className='col'>
-              <div className='endorsal-card'>
-                {ch.Photo === '' ? (
-                  ''
-                ) : (
-                  <img src={ch.Photo} alt='' className='avatar' />
-                )}
-                <div className='rating'>{Ratings}</div>
-                <h3 className='name'>{ch.Name}</h3>
-                <h4 className='place'>{ch.Position}</h4>
-                <h3>{ch.Title}</h3>
-                {ch.Review === '' ? (
-                  ''
-                ) : (
-                  <p>
-                    {readMore === value ? ch.Review : read}
-                    <span>
-                      {readMore === value ? (
-                        ''
-                      ) : read.length < 100 ? (
-                        ''
-                      ) : (
-                        <button onClick={() => ReadMore(value)}>
-                          Read More
-                        </button>
-                      )}
-                    </span>
-                  </p>
-                )}
-                {ch.Companylogo === '' ? (
-                  ''
-                ) : (
-                  <img src={ch.Companylogo} alt='' className='logo' />
-                )}
-                <p className='review'>{`Review for ${ch.Service}`}</p>
+        {all &&
+          all.map((ch, value) => {
+            const Ratings = [];
+            const star = ch.Rating.slice(0, 1);
+            for (let i = 0; i < parseInt(star); i++) {
+              Ratings.push(<img src={Star} alt='' />);
+            }
+            let read = ch.Review.slice(0, 100);
+            const ReadMore = (index) => {
+              console.log('isClicked');
+              read = ch.Review;
+              setReadMore(index);
+            };
+            return (
+              <div className='col'>
+                <div className='endorsal-card'>
+                  {ch.Photo === '' ? (
+                    ''
+                  ) : (
+                    <img src={ch.Photo} alt='' className='avatar' />
+                  )}
+                  <div className='rating'>{Ratings}</div>
+                  <h3 className='name'>{ch.Name}</h3>
+                  <h4 className='place'>{ch.Position}</h4>
+                  <h3>{ch.Title}</h3>
+                  {ch.Review === '' ? (
+                    ''
+                  ) : (
+                    <p>
+                      {readMore === value ? ch.Review : read}
+                      <span>
+                        {readMore === value ? (
+                          ''
+                        ) : read.length < 100 ? (
+                          ''
+                        ) : (
+                          <button onClick={() => ReadMore(value)}>
+                            Read More
+                          </button>
+                        )}
+                      </span>
+                    </p>
+                  )}
+                  {ch.Companylogo === '' ? (
+                    ''
+                  ) : (
+                    <img src={ch.Companylogo} alt='' className='logo' />
+                  )}
+                  <p className='review'>{`Review for ${ch.Service}`}</p>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </>
   );
