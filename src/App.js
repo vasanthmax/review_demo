@@ -11,7 +11,7 @@ function App() {
   useEffect(() => {
     axios
       .get(
-        `https://script.google.com/macros/s/AKfycbyS78rJrCu8JKkSw3qt43c047o1uMSM74dy0iYOP0dKO7sAlM0u1TAwCKjTbqBTzK9Ztw/exec?limit=${50}&offset=${page}`
+        `https://script.google.com/macros/s/AKfycbyS78rJrCu8JKkSw3qt43c047o1uMSM74dy0iYOP0dKO7sAlM0u1TAwCKjTbqBTzK9Ztw/exec`
       )
       .then((lol) => {
         setdata([...data, ...lol.data[0].data]);
@@ -37,20 +37,20 @@ function App() {
   }, [filtervalue, page]);
   console.log(data.length);
 
-  const scrollToend = () => {
-    setPage(page + 50);
-    console.log(page);
-  };
+  // const scrollToend = () => {
+  //   setPage(page + 50);
+  //   console.log(page);
+  // };
   console.log(page);
-  window.onscroll = function () {
-    if (
-      Math.ceil(window.innerHeight + document.documentElement.scrollTop) ===
-      document.documentElement.offsetHeight
-    ) {
-      console.log("scrolling");
-      scrollToend();
-    }
-  };
+  // window.onscroll = function () {
+  //   if (
+  //     Math.ceil(window.innerHeight + document.documentElement.scrollTop) ===
+  //     document.documentElement.offsetHeight
+  //   ) {
+  //     console.log("scrolling");
+  //     scrollToend();
+  //   }
+  // };
   console.log(filters.length);
   const [dropdownlist, setDropdownlist] = useState([]);
   for (let i = 0; i < filters.length; i++) {
