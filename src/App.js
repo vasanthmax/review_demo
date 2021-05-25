@@ -9,9 +9,10 @@ function App() {
   const [all, setAll] = useState([]);
   const [filters, setFilters] = useState([]);
   const [filtervalue, setFilterValue] = useState("All");
+  const params = new URLSearchParams(window.location.search);
   useEffect(() => {
     Tabletop.init({
-      key: "1cEPidFqz355bL5LD058JRPVl-Unmg3nD1pIeQIkcb5c",
+      key: params.get("id"),
       simpleSheet: true,
     })
 
@@ -62,6 +63,7 @@ function App() {
   // }
 
   // console.log(dropdownlist);
+  all.filter((ch) => ch.visiblity === "Yes");
   return (
     <>
       <div className="filter-bar">
@@ -91,27 +93,29 @@ function App() {
         })}
       </div>
       <div className="App">
-        {all.map((ch) => {
-          const Ratings = [];
-          const star = ch.Rating.slice(0, 1);
-          for (let i = 0; i < parseInt(star); i++) {
-            Ratings.push(<img src={Star} alt="" />);
-          }
-          return (
-            <div className="col">
-              <Card
-                Photo={ch.Photo}
-                Ratings={Ratings}
-                Name={ch.Name}
-                Position={ch.Position}
-                Review={ch.Review}
-                Title={ch.Title}
-                Companylogo={ch.Companylogo}
-                Service={ch.Service}
-              ></Card>
-            </div>
-          );
-        })}
+        {all
+          .filter((ch) => ch.visiblity === "Yes")
+          .map((ch) => {
+            const Ratings = [];
+            const star = ch.Rating.slice(0, 1);
+            for (let i = 0; i < parseInt(star); i++) {
+              Ratings.push(<img src={Star} alt="" />);
+            }
+            return (
+              <div className="col">
+                <Card
+                  Photo={ch.Photo}
+                  Ratings={Ratings}
+                  Name={ch.Name}
+                  Position={ch.Position}
+                  Review={ch.Review}
+                  Title={ch.Title}
+                  Companylogo={ch.Companylogo}
+                  Service={ch.Service}
+                ></Card>
+              </div>
+            );
+          })}
       </div>
     </>
   );
