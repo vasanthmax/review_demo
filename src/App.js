@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./components/card";
 import Star from "./assets/star.png";
 import axios from "axios";
+import Tabletop from "tabletop";
 function App() {
   const [page, setPage] = useState(1);
   const [data, setdata] = useState([]);
@@ -9,32 +10,32 @@ function App() {
   const [filters, setFilters] = useState([]);
   const [filtervalue, setFilterValue] = useState("All");
   useEffect(() => {
-    axios
-      .get(
-        `https://script.google.com/macros/s/AKfycbyS78rJrCu8JKkSw3qt43c047o1uMSM74dy0iYOP0dKO7sAlM0u1TAwCKjTbqBTzK9Ztw/exec`
-      )
+    Tabletop.init({
+      key: "1cEPidFqz355bL5LD058JRPVl-Unmg3nD1pIeQIkcb5c",
+      simpleSheet: true,
+    })
+
       .then((lol) => {
-        setdata([...data, ...lol.data[0].data]);
-        setAll([...data, ...lol.data[0].data]);
-        setFilters(lol.data[0].data);
+        console.log(lol);
+        setdata([...lol]);
+        setAll([...lol]);
+        // setFilters(lol.data[0].data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [page]);
+  }, []);
 
-  const filterCards = () => {
-    if (filtervalue === "All") {
+  const filterCards = (value) => {
+    if (value === "All") {
       console.log("All");
       setAll(data);
     } else {
-      const dataValue = data.filter((ch) => ch.Service === filtervalue);
+      const dataValue = data.filter((ch) => ch.Service === value);
       setAll(dataValue);
     }
   };
-  useEffect(() => {
-    filterCards();
-  }, [filtervalue, page]);
+
   console.log(data.length);
 
   // const scrollToend = () => {
@@ -52,24 +53,40 @@ function App() {
   //   }
   // };
   console.log(filters.length);
-  const [dropdownlist, setDropdownlist] = useState([]);
-  for (let i = 0; i < filters.length; i++) {
-    const filterTitle = filters[i].Service;
-    if (dropdownlist.findIndex((ch) => ch.Service === filterTitle) === -1) {
-      dropdownlist.push({ Service: filterTitle });
-    }
-  }
+  // const [dropdownlist, setDropdownlist] = useState([]);
+  // for (let i = 0; i < filters.length; i++) {
+  //   const filterTitle = filters[i].Service;
+  //   if (dropdownlist.findIndex((ch) => ch.Service === filterTitle) === -1) {
+  //     dropdownlist.push({ Service: filterTitle });
+  //   }
+  // }
 
-  console.log(dropdownlist);
+  // console.log(dropdownlist);
   return (
     <>
       <div className="filter-bar">
-        <button>All</button>
-        {dropdownlist.map((ns) => {
+        <button
+          onClick={() => {
+            filterCards("All");
+          }}
+        >
+          All
+        </button>
+        {data.map((ns) => {
           return (
-            <button onClick={() => setFilterValue(ns.Service)}>
-              {ns.Service}
-            </button>
+            <span>
+              {ns.Headers === "" ? (
+                ""
+              ) : (
+                <button
+                  onClick={() => {
+                    filterCards(ns.Headers);
+                  }}
+                >
+                  {ns.Headers}
+                </button>
+              )}
+            </span>
           );
         })}
       </div>
