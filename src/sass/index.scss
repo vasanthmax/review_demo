@@ -2,7 +2,84 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-@import './card';
+.App {
+  column-count: 3;
+  max-width: 200vw;
+  padding: 100px;
+  .col {
+    height: auto;
+    break-inside: avoid-column;
+    overflow: hidden;
+    margin-bottom: 10px;
+    column-gap: 10px;
+    // box-shadow: 1px 1px 20px rgb(204, 204, 204);
+    // border-radius: 12px;
+    background: white;
+    padding: 10px;
+    position: relative;
+  }
+}
+.filter-bar {
+  height: 10vh;
+  width: 80%;
+  margin: auto;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+
+  button {
+    padding: 5px 30px;
+    margin-right: 10px;
+    border-radius: 20px;
+    background: #ededed;
+    border: none;
+  }
+}
+@media screen and (min-width: 2560px) {
+  .App {
+    column-count: 5;
+  }
+}
+
+@media screen and (min-width: 720px) {
+  .App {
+    column-count: 2;
+    padding: 5px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .App {
+    column-count: 3;
+    padding: 5px;
+    padding: 80px;
+  }
+}
+@media screen and (max-width: 600px) {
+  .App {
+    column-count: 1;
+    padding: 10px;
+  }
+  .filter-bar {
+    height: 20vh;
+    width: 100%;
+    margin: auto;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+
+    button {
+      padding: 5px 30px;
+      margin-right: 10px;
+      border-radius: 20px;
+      background: #ededed;
+      border: none;
+    }
+  }
+}
+@import "./card";
