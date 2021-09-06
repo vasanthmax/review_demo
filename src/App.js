@@ -11,7 +11,7 @@ function App() {
   useEffect(() => {
     axios
       .get(
-        `https://script.google.com/macros/s/AKfycbyS78rJrCu8JKkSw3qt43c047o1uMSM74dy0iYOP0dKO7sAlM0u1TAwCKjTbqBTzK9Ztw/exec?limit=${50}&offset=${page}`
+        `https://script.google.com/macros/s/AKfycbySf_JF_3EcWLyKr43mcbBtRzV7JAC8BOGnslvRAi4fRilIS_z1Yd73nzuyTRYLBBUL/exec/exec?limit=${50}&offset=${page}`
       )
       .then((lol) => {
         setdata([...data, ...lol.data[0].data]);
@@ -76,14 +76,14 @@ function App() {
       <div className="App">
         {all.map((ch) => {
           const Ratings = [];
-          const star = ch.Rating.slice(0, 1);
+          const star = ch.Rating;
           for (let i = 0; i < parseInt(star); i++) {
             Ratings.push(<img src={Star} alt="" />);
           }
           return (
             <div className="col">
               <Card
-                Photo={ch.Photo}
+                Photo={ch.Image}
                 Ratings={Ratings}
                 Name={ch.Name}
                 Position={ch.Position}
